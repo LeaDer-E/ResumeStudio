@@ -1,50 +1,85 @@
-// Open Modal with animation
-function openModal(imageSrc) {
-    const modal = document.getElementById('modal');
-    const modalImg = document.getElementById('modal-img');
+// Navigation
+function navigateTo(hash) {
+  // Remove active class from all pages and links
+  document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+  document.querySelectorAll('.nav-links a').forEach(link => link.classList.remove('active'));
 
-    modalImg.src = imageSrc;
-    modal.style.display = 'flex';
+  // Add active class to target page and link
+  const targetPage = document.querySelector(hash);
+  const targetLink = document.querySelector(`a[href="${hash}"]`);
+  
+  if (targetPage) {
+    targetPage.classList.add('active');
+  }
+  if (targetLink) {
+    targetLink.classList.add('active');
+  }
 
-    // Add animation class
-    modal.classList.add('fade-in');
-    modalImg.classList.add('zoom-in');
-
-    // Remove the animation class after animation ends
-    setTimeout(() => {
-        modal.classList.remove('fade-in');
-        modalImg.classList.remove('zoom-in');
-    }, 300);
+  // Smooth scroll to top
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// Close Modal with animation
-function closeModal() {
-    const modal = document.getElementById('modal');
-    const modalImg = document.getElementById('modal-img');
+// Handle navigation
+window.addEventListener('hashchange', () => {
+  navigateTo(window.location.hash || '#home');
+});
 
-    modal.classList.add('fade-out');
-    modalImg.classList.add('zoom-out');
+// Initial navigation
+navigateTo(window.location.hash || '#home');
 
-    setTimeout(() => {
-        modal.style.display = 'none';
-        modal.classList.remove('fade-out');
-        modalImg.classList.remove('zoom-out');
-    }, 300);
+// Lightbox functionality
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = lightbox.querySelector('img');
+const closeButton = lightbox.querySelector('.close-button');
+
+// Open lightbox
+document.querySelectorAll('.template').forEach(template => {
+  template.addEventListener('click', () => {
+    const img = template.querySelector('img');
+    lightboxImg.src = img.src;
+    lightboxImg.alt = img.alt;
+    lightbox.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  });
+});
+
+// Close lightbox
+function closeLightbox() {
+  lightbox.classList.remove('active');
+  document.body.style.overflow = '';
 }
 
-// Close on Escape Key Press
-document.addEventListener("keydown", function(event) {
-    if (event.key === "Escape") {
-        closeModal();
-    }
+closeButton.addEventListener('click', closeLightbox);
+lightbox.addEventListener('click', (e) => {
+  if (e.target === lightbox) {
+    closeLightbox();
+  }
 });
 
-
-// Close modal when clicking outside the image
-document.getElementById('modal').addEventListener('click', function(event) {
-    if (event.target !== document.getElementById('modal-img')) {
-        closeModal();
-    }
+// Close lightbox with Escape key
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+    closeLightbox();
+  }
 });
 
+// Update copyright year
+document.getElementById('year').textContent = new Date().getFullYear();
 
+// Handle mobile navigation
+let lastScrollTop = 0;
+const header = document.querySelector('header');
+
+window.addEventListener('scroll', () => {
+  const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+  
+  if (scrollTop > lastScrollTop && scrollTop > 100) {
+    // Scrolling down
+    header.style.transform = 'translateY(-100%)';
+  } else {
+    // Scrolling up
+    header.style.transform = 'translateY(0)';
+  }
+  
+  lastScrollTop = scrollTop;
+});
