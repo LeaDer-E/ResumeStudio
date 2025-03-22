@@ -1,0 +1,75 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: black;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #000000;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #3b82f6;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #2563eb;
+}
+
+/* Aspect ratio utility */
+.aspect-w-3 {
+  position: relative;
+  padding-bottom: calc(4 / 3 * 100%);
+}
+
+.aspect-w-3 > * {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+/* للمتصفحات التي تدعم Webkit (مثل Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 8px; /* عرض الشريط */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #3182ce; /* لون الشريط (تعديل حسب اللون المطلوب) */
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: black; /* خلفية المسار */
+}
+
+/* لجعل اللون ثابتًا حتى على الأجهزة الصغيرة */
+@media (max-width: 768px) {
+  ::-webkit-scrollbar-thumb {
+    background: #3182ce; /* نفس اللون للأجهزة الصغيرة */
+  }
+}
+
+/* للفايرفوكس */
+* {
+  scrollbar-color: #3182ce black;
+}
